@@ -14,6 +14,7 @@ class DepartmentsController < ApplicationController
 
   # GET /departments/new
   def new
+    @organization = Organization.find(params[:organization_id])
     @department = Department.new
   end
 
@@ -24,11 +25,13 @@ class DepartmentsController < ApplicationController
   # POST /departments
   # POST /departments.json
   def create
+    # render plain: department_params
     @department = Department.new(department_params)
+    @department.organization_id = params[:organization_id]
 
     respond_to do |format|
       if @department.save
-        format.html { redirect_to @department, notice: 'Department was successfully created.' }
+        format.html { redirect_to @organization.department, notice: 'Department was successfully created.' }
         format.json { render :show, status: :created, location: @department }
       else
         format.html { render :new }
